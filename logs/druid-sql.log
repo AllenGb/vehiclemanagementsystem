@@ -1,0 +1,214 @@
+[2019-08-05 09:48:07] DEBUG 137 statementLog - {conn-10001, pstmt-20000} created. SELECT U.*,
+		       D1.`TEXT` AS DETP_NAME,
+		       D2.`TEXT` AS POST_NAME
+		  FROM 
+		     Q_USERS U     
+		     INNER JOIN DICTIONARY D1 ON U.`DEPT_ID`=D1.`ID`
+		     INNER JOIN DICTIONARY D2 ON U.`POST_ID`=D2.`ID` 
+		 WHERE	LNAME=? 
+		   AND	LPASS=?
+[2019-08-05 09:48:08] DEBUG 137 statementLog - {conn-10001, pstmt-20000} Parameters : [admin, 21232f297a57a5a743894a0e4a801fc3]
+[2019-08-05 09:48:08] DEBUG 137 statementLog - {conn-10001, pstmt-20000} Types : [VARCHAR, VARCHAR]
+[2019-08-05 09:48:08] DEBUG 137 statementLog - {conn-10001, pstmt-20000} executed. 14.75842 millis. SELECT U.*,
+		       D1.`TEXT` AS DETP_NAME,
+		       D2.`TEXT` AS POST_NAME
+		  FROM 
+		     Q_USERS U     
+		     INNER JOIN DICTIONARY D1 ON U.`DEPT_ID`=D1.`ID`
+		     INNER JOIN DICTIONARY D2 ON U.`POST_ID`=D2.`ID` 
+		 WHERE	LNAME=? 
+		   AND	LPASS=?
+[2019-08-05 09:48:08] DEBUG 137 statementLog - {conn-10001, pstmt-20000} clearParameters. 
+[2019-08-05 09:48:09] DEBUG 137 statementLog - {conn-10001, pstmt-20001} created. SELECT 
+		  	 
+		ID,PID,TEXT,URL
+	 
+		  FROM Q_MENU
+[2019-08-05 09:48:09] DEBUG 137 statementLog - {conn-10001, pstmt-20001} Parameters : []
+[2019-08-05 09:48:09] DEBUG 137 statementLog - {conn-10001, pstmt-20001} Types : []
+[2019-08-05 09:48:09] DEBUG 137 statementLog - {conn-10001, pstmt-20001} executed. 6.750904 millis. SELECT 
+		  	 
+		ID,PID,TEXT,URL
+	 
+		  FROM Q_MENU
+[2019-08-05 09:48:09] DEBUG 137 statementLog - {conn-10001, pstmt-20001} clearParameters. 
+[2019-08-05 09:50:25] DEBUG 137 statementLog - {conn-10001, pstmt-20000} closed
+[2019-08-05 09:50:25] DEBUG 137 statementLog - {conn-10001, pstmt-20001} closed
+[2019-08-05 11:01:22] DEBUG 137 statementLog - {conn-10001, pstmt-20000} created. SELECT
+      		UR.ID ID,
+      		UR.CAR_NAME CAR_NAME,
+      		UR.DEPT_TEXT DEPT_TEXT,
+      		UR.BEGIN_TIME BEGIN_TIME,
+      		UR.PRE_BACKTIME PRE_BACKTIME,
+      		UR.BACKTIME BACKTIME,
+      		UR.PERSONNEL PERSONNEL,
+      		UR.DRIVER_NAME DRIVER_NAME,
+      		UR.START_MIL START_MIL,
+      		UR.DESTINATION DESTINATION,
+      		UR.THIS_MIL THIS_MIL,
+      		UR.RETURN_MIL RETURN_MIL,
+      		UR.CREATE_RNAME CREATE_RNAME,
+      		UR.DEPT_ID DEPT_ID,
+      		UR.CREATE_UID CREATE_UID,
+      		UR.CAR_ID CAR_ID,
+      		UR.DRIVER_ID DRIVER_ID,
+      		UR.PARK_PLACE PARK_PLACE,
+      		UR.RETURN_MIL RETURN_MIL,
+      		UR.REASON REASON,
+      		UR.REMARKS REMARKS
+      	FROM
+    		(
+    			SELECT
+      				DR.ID ID,
+      				DR.BEGIN_TIME BEGIN_TIME,
+      				DR.PRE_BACKTIME PRE_BACKTIME,
+      				DR.BACKTIME BACKTIME,
+      				DR.PERSONNEL PERSONNEL,
+      				DR.DESTINATION DESTINATION,
+      				DR.REASON REASON,
+      				DR.START_MIL START_MIL,
+      				DR.RETURN_MIL RETURN_MIL,
+      				DR.THIS_MIL THIS_MIL,
+      				DR.PARK_PLACE PARK_PLACE,
+      				DR.REMARKS REMARKS,
+      				DR.DEPT_ID DEPT_ID,
+      				DR.CAR_ID CAR_ID,
+      				DR.DRIVER_ID DRIVER_ID,
+      				DR.CREATE_UID CREATE_UID,
+      				D.TEXT DEPT_TEXT,
+      				DRI.NAME DRIVER_NAME,
+      				U.RNAME CREATE_RNAME,
+      				C.CAR_NO CAR_NAME
+
+    			FROM
+      				DRIVING_RECORD DR
+      				LEFT JOIN  DICTIONARY D ON DR.DEPT_ID=D.ID
+	  				LEFT JOIN  Q_USERS U ON DR.CREATE_UID=U.ID
+	  				LEFT JOIN  DRIVER DRI ON DR.DRIVER_ID=DRI.ID
+	  				LEFT JOIN  CAR  C  ON DR.CAR_ID=C.ID
+      			WHERE
+    				DR.ID=?
+    		) UR
+[2019-08-05 11:01:22] DEBUG 137 statementLog - {conn-10001, pstmt-20000} Parameters : [1]
+[2019-08-05 11:01:22] DEBUG 137 statementLog - {conn-10001, pstmt-20000} Types : [INTEGER]
+[2019-08-05 11:01:22] DEBUG 137 statementLog - {conn-10001, pstmt-20000} executed. 20.115869 millis. SELECT
+      		UR.ID ID,
+      		UR.CAR_NAME CAR_NAME,
+      		UR.DEPT_TEXT DEPT_TEXT,
+      		UR.BEGIN_TIME BEGIN_TIME,
+      		UR.PRE_BACKTIME PRE_BACKTIME,
+      		UR.BACKTIME BACKTIME,
+      		UR.PERSONNEL PERSONNEL,
+      		UR.DRIVER_NAME DRIVER_NAME,
+      		UR.START_MIL START_MIL,
+      		UR.DESTINATION DESTINATION,
+      		UR.THIS_MIL THIS_MIL,
+      		UR.RETURN_MIL RETURN_MIL,
+      		UR.CREATE_RNAME CREATE_RNAME,
+      		UR.DEPT_ID DEPT_ID,
+      		UR.CREATE_UID CREATE_UID,
+      		UR.CAR_ID CAR_ID,
+      		UR.DRIVER_ID DRIVER_ID,
+      		UR.PARK_PLACE PARK_PLACE,
+      		UR.RETURN_MIL RETURN_MIL,
+      		UR.REASON REASON,
+      		UR.REMARKS REMARKS
+      	FROM
+    		(
+    			SELECT
+      				DR.ID ID,
+      				DR.BEGIN_TIME BEGIN_TIME,
+      				DR.PRE_BACKTIME PRE_BACKTIME,
+      				DR.BACKTIME BACKTIME,
+      				DR.PERSONNEL PERSONNEL,
+      				DR.DESTINATION DESTINATION,
+      				DR.REASON REASON,
+      				DR.START_MIL START_MIL,
+      				DR.RETURN_MIL RETURN_MIL,
+      				DR.THIS_MIL THIS_MIL,
+      				DR.PARK_PLACE PARK_PLACE,
+      				DR.REMARKS REMARKS,
+      				DR.DEPT_ID DEPT_ID,
+      				DR.CAR_ID CAR_ID,
+      				DR.DRIVER_ID DRIVER_ID,
+      				DR.CREATE_UID CREATE_UID,
+      				D.TEXT DEPT_TEXT,
+      				DRI.NAME DRIVER_NAME,
+      				U.RNAME CREATE_RNAME,
+      				C.CAR_NO CAR_NAME
+
+    			FROM
+      				DRIVING_RECORD DR
+      				LEFT JOIN  DICTIONARY D ON DR.DEPT_ID=D.ID
+	  				LEFT JOIN  Q_USERS U ON DR.CREATE_UID=U.ID
+	  				LEFT JOIN  DRIVER DRI ON DR.DRIVER_ID=DRI.ID
+	  				LEFT JOIN  CAR  C  ON DR.CAR_ID=C.ID
+      			WHERE
+    				DR.ID=?
+    		) UR
+[2019-08-05 11:01:22] DEBUG 137 statementLog - {conn-10001, pstmt-20000} clearParameters. 
+[2019-08-05 11:01:44] DEBUG 137 statementLog - {conn-10001, pstmt-20001} created. SELECT U.*,
+		       D1.`TEXT` AS DETP_NAME,
+		       D2.`TEXT` AS POST_NAME
+		  FROM 
+		     Q_USERS U     
+		     INNER JOIN DICTIONARY D1 ON U.`DEPT_ID`=D1.`ID`
+		     INNER JOIN DICTIONARY D2 ON U.`POST_ID`=D2.`ID` 
+		 WHERE	LNAME=? 
+		   AND	LPASS=?
+[2019-08-05 11:01:44] DEBUG 137 statementLog - {conn-10001, pstmt-20001} Parameters : [admin, 21232f297a57a5a743894a0e4a801fc3]
+[2019-08-05 11:01:44] DEBUG 137 statementLog - {conn-10001, pstmt-20001} Types : [VARCHAR, VARCHAR]
+[2019-08-05 11:01:44] DEBUG 137 statementLog - {conn-10001, pstmt-20001} executed. 1.800425 millis. SELECT U.*,
+		       D1.`TEXT` AS DETP_NAME,
+		       D2.`TEXT` AS POST_NAME
+		  FROM 
+		     Q_USERS U     
+		     INNER JOIN DICTIONARY D1 ON U.`DEPT_ID`=D1.`ID`
+		     INNER JOIN DICTIONARY D2 ON U.`POST_ID`=D2.`ID` 
+		 WHERE	LNAME=? 
+		   AND	LPASS=?
+[2019-08-05 11:01:44] DEBUG 137 statementLog - {conn-10001, pstmt-20001} clearParameters. 
+[2019-08-05 11:01:45] DEBUG 137 statementLog - {conn-10001, pstmt-20002} created. SELECT 
+		  	 
+		ID,PID,TEXT,URL
+	 
+		  FROM Q_MENU
+[2019-08-05 11:01:45] DEBUG 137 statementLog - {conn-10001, pstmt-20002} Parameters : []
+[2019-08-05 11:01:45] DEBUG 137 statementLog - {conn-10001, pstmt-20002} Types : []
+[2019-08-05 11:01:45] DEBUG 137 statementLog - {conn-10001, pstmt-20002} executed. 2.411305 millis. SELECT 
+		  	 
+		ID,PID,TEXT,URL
+	 
+		  FROM Q_MENU
+[2019-08-05 11:01:45] DEBUG 137 statementLog - {conn-10001, pstmt-20002} clearParameters. 
+[2019-08-05 11:03:12] DEBUG 137 statementLog - {conn-10001, pstmt-20002} Parameters : []
+[2019-08-05 11:03:12] DEBUG 137 statementLog - {conn-10001, pstmt-20002} Types : []
+[2019-08-05 11:03:12] DEBUG 137 statementLog - {conn-10001, pstmt-20002} executed. 2.645005 millis. SELECT 
+		  	 
+		ID,PID,TEXT,URL
+	 
+		  FROM Q_MENU
+[2019-08-05 11:03:12] DEBUG 137 statementLog - {conn-10001, pstmt-20002} clearParameters. 
+[2019-08-05 11:03:18] DEBUG 137 statementLog - {conn-10001, pstmt-20001} Parameters : [admin, 21232f297a57a5a743894a0e4a801fc3]
+[2019-08-05 11:03:18] DEBUG 137 statementLog - {conn-10001, pstmt-20001} Types : [VARCHAR, VARCHAR]
+[2019-08-05 11:03:18] DEBUG 137 statementLog - {conn-10001, pstmt-20001} executed. 1.43656 millis. SELECT U.*,
+		       D1.`TEXT` AS DETP_NAME,
+		       D2.`TEXT` AS POST_NAME
+		  FROM 
+		     Q_USERS U     
+		     INNER JOIN DICTIONARY D1 ON U.`DEPT_ID`=D1.`ID`
+		     INNER JOIN DICTIONARY D2 ON U.`POST_ID`=D2.`ID` 
+		 WHERE	LNAME=? 
+		   AND	LPASS=?
+[2019-08-05 11:03:18] DEBUG 137 statementLog - {conn-10001, pstmt-20001} clearParameters. 
+[2019-08-05 11:03:19] DEBUG 137 statementLog - {conn-10001, pstmt-20002} Parameters : []
+[2019-08-05 11:03:19] DEBUG 137 statementLog - {conn-10001, pstmt-20002} Types : []
+[2019-08-05 11:03:19] DEBUG 137 statementLog - {conn-10001, pstmt-20002} executed. 1.851053 millis. SELECT 
+		  	 
+		ID,PID,TEXT,URL
+	 
+		  FROM Q_MENU
+[2019-08-05 11:03:19] DEBUG 137 statementLog - {conn-10001, pstmt-20002} clearParameters. 
+[2019-08-05 11:07:12] DEBUG 137 statementLog - {conn-10001, pstmt-20000} closed
+[2019-08-05 11:07:12] DEBUG 137 statementLog - {conn-10001, pstmt-20001} closed
+[2019-08-05 11:07:12] DEBUG 137 statementLog - {conn-10001, pstmt-20002} closed

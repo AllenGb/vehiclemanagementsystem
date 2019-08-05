@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gb.Dao.DrivingRecordDao">
+
+	<resultMap type="DrivingRecord" id="SelDR">
+		<id property="id"  column="ID"/>
+		<result property="begin_time" column="BEGIN_TIME"/>
+		<result property="pre_backtime" column="PRE_BACKTIME"/>
+		<result property="backtime" column="BACKTIME"/>
+		<result property="personnel" column="PERSONNEL"/>
+		<result property="destination"  column="DESTINATION"/>
+		<result property="reason" column="REASON"/>
+		<result property="start_mil" column="START_MIL"/>
+		<result property="return_mil" column="RETURN_MIL"/>
+		<result property="this_mil" column="THIS_MIL"/>
+		<result property="park_place"  column="PARK_PLACE"/>
+		<result property="remarks" column="REMARKS"/>
+
+		<association property="car" javaType="Car" column="CAR_ID">
+			<id property="id"   column="CAR_ID" />
+			<result property="carNo"  column="CAR_NAME"/>
+		</association>
+		<association property="dept" javaType="Dictionary" column="DEPT_ID">
+			<id property="id"  column="DEPT_ID" />
+			<result property="text"  column="DEPT_TEXT"/>
+		</association>
+		<association property="driver" javaType="Driver" column="DRIVER_ID">
+			<id property="id"  column="DRIVER_ID" />
+			<result property="name"  column="DRIVER_NAME"/>
+		</association>
+		<association property="creater" javaType="Q_Users" column="CREATE_UID">
+			<id property="id"  column="CREATE_UID" />
+			<result property="rname"  column="CREATE_RNAME"/>
+		</association>
+	</resultMap>
+
+	<!--通过id查询出车信息  -->
+	<select id="findDrivingRecordById"  resultMap="SelDR"  parameterType="int">
+
+  		SELECT
+      		UR.ID ID,
+      		UR.CAR_NAME CAR_NAME,
+      		UR.DEPT_TEXT DEPT_TEXT,
+      		UR.BEGIN_TIME BEGIN_TIME,
+      		UR.PRE_BACKTIME PRE_BACKTIME,
+      		UR.BACKTIME BACKTIME,
+      		UR.PERSONNEL PERSONNEL,
+      		UR.DRIVER_NAME DRIVER_NAME,
+      		UR.START_MIL START_MIL,
+      		UR.DESTINATION DESTINATION,
+      		UR.THIS_MIL THIS_MIL,
+      		UR.RETURN_MIL RETURN_MIL,
+      		UR.CREATE_RNAME CREATE_RNAME,
+      		UR.DEPT_ID DEPT_ID,
+      		UR.CREATE_UID CREATE_UID,
+      		UR.CAR_ID CAR_ID,
+      		UR.DRIVER_ID DRIVER_ID,
+      		UR.PARK_PLACE PARK_PLACE,
+      		UR.RETURN_MIL RETURN_MIL,
+      		UR.REASON REASON,
+      		UR.REMARKS REMARKS
+      	FROM
+    		(
+    			SELECT
+      				DR.ID ID,
+      				DR.BEGIN_TIME BEGIN_TIME,
+      				DR.PRE_BACKTIME PRE_BACKTIME,
+      				DR.BACKTIME BACKTIME,
+      				DR.PERSONNEL PERSONNEL,
+      				DR.DESTINATION DESTINATION,
+      				DR.REASON REASON,
+      				DR.START_MIL START_MIL,
+      				DR.RETURN_MIL RETURN_MIL,
+      				DR.THIS_MIL THIS_MIL,
+      				DR.PARK_PLACE PARK_PLACE,
+      				DR.REMARKS REMARKS,
+      				DR.DEPT_ID DEPT_ID,
+      				DR.CAR_ID CAR_ID,
+      				DR.DRIVER_ID DRIVER_ID,
+      				DR.CREATE_UID CREATE_UID,
+      				D.TEXT DEPT_TEXT,
+      				DRI.NAME DRIVER_NAME,
+      				U.RNAME CREATE_RNAME,
+      				C.CAR_NO CAR_NAME
+
+    			FROM
+      				DRIVING_RECORD DR
+      				LEFT JOIN  DICTIONARY D ON DR.DEPT_ID=D.ID
+	  				LEFT JOIN  Q_USERS U ON DR.CREATE_UID=U.ID
+	  				LEFT JOIN  DRIVER DRI ON DR.DRIVER_ID=DRI.ID
+	  				LEFT JOIN  CAR  C  ON DR.CAR_ID=C.ID
+      			WHERE
+    				DR.ID=#{id}
+    		) UR
+
+  	</select>
+
+	<!-- 查询所有出车信息，带分页和模糊查询 -->
+	<select id="findDrivingRecDataGrid"  resultMap="SelDR"  parameterType="Map">
+
+		SELECT
+		UR.ID ID,
+		UR.CAR_NAME CAR_NAME,
+		UR.DEPT_TEXT DEPT_TEXT,
+		UR.BEGIN_TIME BEGIN_TIME,
+		UR.PRE_BACKTIME PRE_BACKTIME,
+		UR.BACKTIME BACKTIME,
+		UR.PERSONNEL PERSONNEL,
+		UR.DRIVER_NAME DRIVER_NAME,
+		UR.DESTINATION DESTINATION,
+		UR.THIS_MIL THIS_MIL,
+		UR.CREATE_RNAME CREATE_RNAME
+		FROM
+		(
+		SELECT
+		ROWNUM RN,
+		DR.ID ID,
+		DR.BEGIN_TIME BEGIN_TIME,
+		DR.PRE_BACKTIME PRE_BACKTIME,
+		DR.BACKTIME BACKTIME,
+		DR.PERSONNEL PERSONNEL,
+		DR.DESTINATION DESTINATION,
+		DR.REASON REASON,
+		DR.START_MIL START_MIL,
+		DR.RETURN_MIL RETURN_MIL,
+		DR.THIS_MIL THIS_MIL,
+		DR.PARK_PLACE PARK_PLACE,
+		DR.REMARKS REMARKS,
+		DR.DEPT_ID DEPT_ID,
+		DR.CAR_ID CAR_ID,
+		DR.DRIVER_ID DRIVER_ID,
+		DR.CREATE_UID CREATE_UID,
+		D.TEXT DEPT_TEXT,
+		DRI.NAME DRIVER_NAME,
+		U.RNAME CREATE_RNAME,
+		C.CAR_NO CAR_NAME
+
+		FROM
+		DRIVING_RECORD DR
+		LEFT JOIN  DICTIONARY D ON DR.DEPT_ID=D.ID
+		LEFT JOIN  Q_USERS U ON DR.CREATE_UID=U.ID
+		LEFT JOIN  DRIVER DRI ON DR.DRIVER_ID=DRI.ID
+		LEFT JOIN  CAR  C  ON DR.CAR_ID=C.ID
+		WHERE
+		<if test="drMap.drCarNo !=null">C.CAR_NO LIKE #{drMap.drCarNo } AND</if>
+		<if test="drMap.drCarNo==null">DR.BACKTIME IS NULL AND</if>
+		<if test="drMap.users!=null">DR.CREATE_UID=#{drMap.users.id} AND</if>
+
+		1=1
+		) UR
+		WHERE
+		UR.RN BETWEEN #{drMap.begin } AND #{drMap.end }
+		ORDER BY UR.ID
+
+	</select>
+
+
+</mapper>

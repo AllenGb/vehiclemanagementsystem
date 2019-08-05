@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gb.Dao.QUsersDao">
+
+	<resultMap type="Q_Users" id="rm1">
+		<id property="id" column="ID"/>
+  	    <result property="lname"  column="LNAME"/>
+  	    <result property="lpass"  column="LPASS"/>
+  	    <result property="rname"  column="RNAME"/>
+  	    <result property="age" column="AGE"/>
+  	    <result property="gender"  column="GENDER"/>
+  	    <result property="address"  column="ADDRESS"/>
+  	    <result property="phone"  column="PHONE"/>
+  	    <result property="birthday"  column="BIRTHDAY"/>
+  	    <result property="card"  column="CARD"/>
+  	    <result property="entrytime" column="ENTRYTIME"/>
+  	    <result property="isdisable" column="ISDISABLE"/>
+  	    
+  	    <!-- 多对一 -->
+  	    <association property="dept" javaType="Dictionary">
+			<id property="id" column="DEPT_ID" />
+			<result property="text" column="DEPT_NAME"/>
+		</association>
+		
+		<!-- 多对一 -->
+		<association property="post" javaType="Dictionary">
+			<id property="id"  column="POST_ID" />
+			<result property="text" column="POST_NAME"/>
+		</association>     
+	</resultMap>
+
+	<select id="findByLogin" parameterType="Map" resultMap="rm1">
+		SELECT U.*,
+		       D1.`TEXT` AS DETP_NAME,
+		       D2.`TEXT` AS POST_NAME
+		  FROM 
+		     Q_USERS U     
+		     INNER JOIN DICTIONARY D1 ON U.`DEPT_ID`=D1.`ID`
+		     INNER JOIN DICTIONARY D2 ON U.`POST_ID`=D2.`ID` 
+		 WHERE	LNAME=#{uname} 
+		   AND	LPASS=#{upass}
+	</select>
+
+	<select id="findByPage" parameterType="Map" resultMap="rm1">
+		SELECT U.*,
+		D1.`TEXT` AS DEPT_NAME,
+		D2.`TEXT` AS POST_NAME
+		FROM
+		Q_USERS U
+		INNER JOIN DICTIONARY D1 ON U.`DEPT_ID`=D1.`ID`
+		INNER JOIN DICTIONARY D2 ON U.`POST_ID`=D2.`ID`
+		<where>
+			<if test="id !=null">
+				AND U.ID=#{id}
+			</if>
+			<!-- 滤除管理员信息 -->
+			<if test="adminName !=null">
+				AND U.LNAME !=#{adminName}
+			</if>
+		</where>
+	</select>
+
+	<select id="count" parameterType="Map" resultType="Long">
+		SELECT COUNT(ID) FROM Q_USERS U
+
+		<where>
+			<!-- 滤除管理员信息 -->
+			<if test="adminName !=null">
+				AND U.LNAME !=#{adminName}
+			</if>
+		</where>
+	</select>
+
+	<insert id="add" parameterType="Q_Users">
+		INSERT INTO
+  			 Q_USERS(LNAME,LPASS,RNAME,AGE,GENDER,ADDRESS,PHONE,DEPT_ID,POST_ID,BIRTHDAY,CARD,ENTRYTIME,ISDISABLE)
+  		VALUES
+  		(
+  			#{lname},
+  			#{lpass},
+  			#{rname},
+  			#{age},
+  			#{gender},
+  			#{address},
+  			#{phone},
+  			#{dept.id},
+  			#{post.id},
+  			#{birthday},
+  			#{card},
+  			#{entrytime},
+  			#{isdisable}
+  		)
+	</insert>
+
+</mapper>

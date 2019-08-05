@@ -1,0 +1,58 @@
+server:
+  port:  9000
+
+spring:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://localhost:3306/carmanager?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      filters: stat,wall,log4j2,config
+      max-active: 100
+      initial-size: 1
+      max-wait: 60000
+      min-idle: 1
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: select 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-open-prepared-statements: 50
+      max-pool-prepared-statement-per-connection-size: 20
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: '*.gif,*.png,*.jpg,*.html,*.js,*.css,*.ico,/druid/*'
+        # Druid StatViewServlet配置
+        stat-view-servlet:
+          enabled: true
+          url-pattern: /druid/*
+          reset-enable: true
+          login-username: admin
+          login-password: admin
+        # 配置日志输出
+        filter:
+          slf4j:
+            enabled: true
+            statement-create-after-log-enabled: false
+            statement-close-after-log-enabled: false
+            result-set-open-after-log-enabled: false
+            result-set-close-after-log-enabled: false
+      logging:
+        config: classpath:log4j2.xml
+
+mybatis:
+  mapper-locations: classpath:com/gb/Dao/mapping/*.xml
+  type-aliases-package: com.gb.beans.POJO
+
+#pagehelper
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+  returnPageInfo: check
